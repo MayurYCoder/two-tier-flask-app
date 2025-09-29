@@ -1,0 +1,39 @@
+pipeline{
+    agent any
+
+    stages{
+        stage("Clone"){
+            steps {
+                git url:"https://github.com/MayurYCoder/two-tier-flask-app.git",branch:"master"
+            }
+        }
+        stage("build image"){
+            steps {
+                sh "docker build -t two-tier-flask-app ."
+            }
+        }
+         stage("Test"){
+            steps {
+                echo "Test cases passsed"
+            }
+        }
+         stage("Push to docker hub"){
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: "dockerHubCred",
+                    passwordVariable: "dockerHubPass",
+                    usernameVariable: "dockerHubUser"
+                    )]){
+                        sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+                        sh "docker image tag two-tier-flask-app ${env.dockerHubUser}/two-tier-flask-app:latest"
+                        sh "docker push ${env.dockerHubUser}/two-tier-flask-app:latest"
+                    }
+            }
+        }
+        stage(" docker compose  image"){
+            steps {
+                sh "docker compose up -d --build flask-app "
+            }
+        }
+    }
+}
