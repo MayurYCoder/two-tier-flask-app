@@ -35,4 +35,27 @@ pipeline{
             }
         }
     }
+post {
+        success {
+            emailext(
+                to: 'yadavm0205@gmail.com',
+                subject: "✅ SUCCESS",
+                body: """<p>Hello Team,</p>
+                         <p>The Jenkins job <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> has <b>SUCCEEDED</b>.</p>
+                         <p>Check console output <a href="${env.BUILD_URL}">here</a>.</p>"""
+            )
+        }
+        failure {
+            emailext(
+                to: 'yadavm0205@gmail.com',
+                subject: "❌ FAILURE: Job ",
+                body: """<p>Hello Team,</p>
+                         <p>The Jenkins job <b>${env.JOB_NAME} #${env.BUILD_NUMBER}</b> has <b>FAILED</b>.</p>
+                         <p>Please check the console output <a href="${env.BUILD_URL}">here</a> for details.</p>"""
+            )
+        }
+        always {
+            echo "Email notification process completed"
+        }
+    }
 }
