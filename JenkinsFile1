@@ -1,6 +1,5 @@
 pipeline{
     agent { labels: "dev"};
-
     stages{
         stage("Clone"){
             steps {
