@@ -10,7 +10,8 @@ pipeline{
 
         stage("trivy scan"){
             steps {
-                sh "trivy fs . -a trivy_scan.json"
+                sh 'trivy fs . -f json -o trivy_scan.json'
+                echo "✅ Trivy scan completed. Report saved as trivy_scan.json
             }
         }
 
