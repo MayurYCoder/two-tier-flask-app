@@ -10,7 +10,6 @@ pipeline{
               }
             }
         }
-
         stage("trivy scan"){
             steps {
                 call()
