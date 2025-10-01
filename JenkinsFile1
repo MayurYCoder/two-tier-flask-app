@@ -13,7 +13,7 @@ pipeline{
 
         stage("trivy scan"){
             steps {
-                trivy_fs()
+                call()
                 echo "✅ Trivy scan completed. Report saved as trivy_scan.json"
             }
         }
